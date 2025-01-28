@@ -1,6 +1,6 @@
 # petadaptionapp
 
-A Pet Adaption App for Flutter Task
+A Pet Adaption App for Flutter Assessment Tas
 
 ## Getting Started
 
