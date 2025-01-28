@@ -4,9 +4,9 @@ class LoadPets extends PetEvent {}
 
 class AdoptPet extends PetEvent {
   final String petId;
-  final DateTime adaptedDatetime;
+  final DateTime adoptedDatetime;
 
-  AdoptPet(this.petId, this.adaptedDatetime);
+  AdoptPet(this.petId, this.adoptedDatetime);
 }
 
 class FilterPets extends PetEvent {

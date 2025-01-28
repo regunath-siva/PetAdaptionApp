@@ -1,194 +1,43 @@
+import 'package:hive/hive.dart';
+
 import '../models/pet_model.dart';
 
 class PetRepository {
-  final List<Pet> _pets = [
-    Pet(
-      id: '1',
-      name: 'Buddy',
-      age: 2,
-      price: 100.0,
-      imageUrl: 'assets/images/dog1.jpg',
-    ),
-    Pet(
-      id: '2',
-      name: 'Mittens',
-      age: 1,
-      price: 80.0,
-      imageUrl: 'assets/images/cat1.jpg',
-    ),
-    Pet(
-      id: '3',
-      name: 'Charlie',
-      age: 3,
-      price: 120.0,
-      imageUrl: 'assets/images/cow1.jpg',
-    ),
-    Pet(
-      id: '4',
-      name: 'Luna',
-      age: 2,
-      price: 90.0,
-      imageUrl: 'assets/images/cat2.png',
-    ),
-    Pet(
-      id: '5',
-      name: 'Max',
-      age: 1,
-      price: 85.0,
-      imageUrl: 'assets/images/dog2.jpg',
-    ),
-    Pet(
-      id: '6',
-      name: 'Coco',
-      age: 4,
-      price: 150.0,
-      imageUrl: 'assets/images/cow2.jpg',
-    ),
-    Pet(
-      id: '7',
-      name: 'Rocky',
-      age: 3,
-      price: 110.0,
-      imageUrl: 'assets/images/cat1.jpg',
-    ),
-    Pet(
-      id: '8',
-      name: 'Bella',
-      age: 2,
-      price: 95.0,
-      imageUrl: 'assets/images/dog1.jpg',
-    ),
-    Pet(
-      id: '9',
-      name: 'Daisy',
-      age: 5,
-      price: 140.0,
-      imageUrl: 'assets/images/cow1.jpg',
-    ),
-    Pet(
-      id: '10',
-      name: 'Oscar',
-      age: 1,
-      price: 75.0,
-      imageUrl: 'assets/images/cat2.png',
-    ),
-    Pet(
-      id: '11',
-      name: 'Max',
-      age: 3,
-      price: 85.0,
-      imageUrl: 'assets/images/dog2.jpg',
-    ),
-    Pet(
-      id: '12',
-      name: 'Coco',
-      age: 4,
-      price: 150.0,
-      imageUrl: 'assets/images/cow2.jpg',
-    ),
-    Pet(
-      id: '13',
-      name: 'Rocky',
-      age: 3,
-      price: 110.0,
-      imageUrl: 'assets/images/cat1.jpg',
-    ),
-    Pet(
-      id: '14',
-      name: 'Bella',
-      age: 2,
-      price: 95.0,
-      imageUrl: 'assets/images/dog1.jpg',
-    ),
-    Pet(
-      id: '15',
-      name: 'Daisy',
-      age: 5,
-      price: 140.0,
-      imageUrl: 'assets/images/cow1.jpg',
-    ),
-    Pet(
-      id: '16',
-      name: 'Coco Two',
-      age: 4,
-      price: 150.0,
-      imageUrl: 'assets/images/cow2.jpg',
-    ),
-    Pet(
-      id: '17',
-      name: 'Rocky Two',
-      age: 3,
-      price: 110.0,
-      imageUrl: 'assets/images/cat1.jpg',
-    ),
-    Pet(
-      id: '18',
-      name: 'Bella Two',
-      age: 2,
-      price: 95.0,
-      imageUrl: 'assets/images/dog1.jpg',
-    ),
-    Pet(
-      id: '19',
-      name: 'Daisy Two',
-      age: 5,
-      price: 140.0,
-      imageUrl: 'assets/images/cow1.jpg',
-    ),
-    Pet(
-      id: '20',
-      name: 'Oscar Two',
-      age: 1,
-      price: 75.0,
-      imageUrl: 'assets/images/cat2.png',
-    ),
-    Pet(
-      id: '21',
-      name: 'Max Three',
-      age: 3,
-      price: 85.0,
-      imageUrl: 'assets/images/dog2.jpg',
-    ),
-    Pet(
-      id: '22',
-      name: 'Coco Three',
-      age: 4,
-      price: 150.0,
-      imageUrl: 'assets/images/cow2.jpg',
-    ),
-    Pet(
-      id: '23',
-      name: 'Rocky Three',
-      age: 3,
-      price: 110.0,
-      imageUrl: 'assets/images/cat1.jpg',
-    ),
-    Pet(
-      id: '24',
-      name: 'Bella Three',
-      age: 2,
-      price: 95.0,
-      imageUrl: 'assets/images/dog1.jpg',
-    ),
-    Pet(
-      id: '25',
-      name: 'Daisy Three',
-      age: 5,
-      price: 140.0,
-      imageUrl: 'assets/images/cow1.jpg',
-    ),
-  ];
+  // Opening the Hive box to store the pets
+  final Box<Pet> _petBox;
 
-  // Returns the complete list of pets
-  List<Pet> getPets() => _pets;
+  PetRepository(this._petBox);
 
-  // Returns only the adopted pets
-  List<Pet> getAdoptedPets() => _pets.where((pet) => pet.isAdopted).toList();
+  // Fetch all pets from Hive
+  List<Pet> getPets() {
+    return _petBox.values.toList();
+  }
 
-  // Marks a specific pet as adopted based on its ID
+  // Fetch only adopted pets
+  List<Pet> getAdoptedPets() {
+    return _petBox.values.where((pet) => pet.isAdopted).toList();
+  }
+
+  // Adopt a pet and update its status in Hive
   void adoptPet(String petId, DateTime adoptedDatetime) {
-    final pet = _pets.firstWhere((p) => p.id == petId);
+    // Get the pet from the box
+    final pet = _petBox.values.firstWhere((p) => p.id == petId);
+
+    // Update the pet's adoption status and adoption date
     pet.isAdopted = true;
     pet.adoptedDate = adoptedDatetime;
+
+    // Save the updated pet back to the box using its ID as the key
+    _petBox.put(pet.id, pet);
+  }
+
+  // Add a pet to the Hive box
+  Future<void> addPet(Pet pet) async {
+    await _petBox.add(pet);
+  }
+
+  // Optionally, clear the pet box (e.g., for testing purposes)
+  Future<void> clearPets() async {
+    await _petBox.clear();
   }
 }

@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pet Adoption App'),
+        title: const Text('Pet Adoption Assessment Task'),
         actions: [
           IconButton(
             icon: const Icon(Icons.history),
@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              autofocus: false,
               controller: _searchController,
               onChanged: (value) {
                 context.read<PetBloc>().add(FilterPets(value));
