@@ -34,4 +34,22 @@ class Pet {
     this.adoptedDate,
     this.isAdopted = false,
   });
+
+  Pet copyWith({
+    String? id,
+    String? name,
+    int? age,
+    double? price,
+    String? imageUrl,
+    bool? isAdopted,
+  }) {
+    return Pet(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      age: age ?? this.age,
+      price: price ?? this.price,
+      imageUrl: imageUrl ?? this.imageUrl,
+      isAdopted: isAdopted ?? this.isAdopted,
+    );
+  }
 }

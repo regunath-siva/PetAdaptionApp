@@ -7,6 +7,7 @@ import '../blocs/pet_state.dart';
 import '../routes.dart';
 import '../widgets/paginated_row.dart';
 import '../widgets/pet_card.dart';
+import '../widgets/search_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,13 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _searchController = TextEditingController();
-
   int _page = 1;
   static const int _pageSize = 10;
 
   @override
   Widget build(BuildContext context) {
+    //Needs to move this isDark mode to util file to use multiple places
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
@@ -39,25 +39,11 @@ class _HomePageState extends State<HomePage> {
           preferredSize: const Size.fromHeight(60),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              autofocus: false,
-              controller: _searchController,
+            child: SearchWidget(
+              key: Key('search_widget'),
               onChanged: (value) {
                 context.read<PetBloc>().add(FilterPets(value));
               },
-              decoration: InputDecoration(
-                hintText: 'Search pets by name...',
-                hintStyle: TextStyle(
-                  color: isDarkMode ? Colors.white54 : Colors.black54,
-                ),
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: isDarkMode ? Colors.grey[800] : Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-              ),
             ),
           ),
         ),
@@ -74,6 +60,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Expanded(
                   child: GridView.builder(
+                    key: Key('pet_grid'),
                     padding: const EdgeInsets.all(8.0),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -85,12 +72,16 @@ class _HomePageState extends State<HomePage> {
                     itemCount: paginatedPets.length,
                     itemBuilder: (context, index) {
                       final pet = paginatedPets[index];
-                      return PetCard(pet: pet);
+                      return PetCard(
+                        pet: pet,
+                        key: Key(pet.id),
+                      );
                     },
                   ),
                 ),
                 if (state.pets.length > _pageSize)
                   PaginatedRow(
+                    key: Key('paginated_row'),
                     page: _page,
                     pageSize: _pageSize,
                     isDarkMode: isDarkMode,
@@ -113,6 +104,7 @@ class _HomePageState extends State<HomePage> {
           } else {
             return Center(
               child: Text(
+                key: Key('failed_text'),
                 'Failed to load pets.',
                 style: TextStyle(
                   color: isDarkMode ? Colors.white : Colors.black,

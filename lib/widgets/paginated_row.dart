@@ -41,6 +41,7 @@ class PaginatedRow extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             ElevatedButton(
+              key: Key('previous_button'),
               onPressed: isPreviousDisabled ? null : onPrevious,
               style: ElevatedButton.styleFrom(
                 backgroundColor: isPreviousDisabled
@@ -61,6 +62,7 @@ class PaginatedRow extends StatelessWidget {
               ),
             ),
             ElevatedButton(
+              key: Key('next_button'),
               onPressed: isNextDisabled ? null : onNext,
               style: ElevatedButton.styleFrom(
                 backgroundColor: isNextDisabled

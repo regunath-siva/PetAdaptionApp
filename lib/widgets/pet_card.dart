@@ -14,6 +14,7 @@ class PetCard extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
 
     return GestureDetector(
+      key: Key('pet_card_${pet.id}'),
       onTap: () {
         Navigator.pushNamed(
           context,
@@ -75,7 +76,8 @@ class PetCard extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        '\u{20B9}${pet.price}',
+                        key: Key('pet_price_${pet.id}'),
+                        '₹${pet.price}',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
