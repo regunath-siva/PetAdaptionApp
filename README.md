@@ -3,6 +3,16 @@
 ## Overview
 The Pet Adoption App is a Flutter-based mobile application designed to display a list of adoptable pets, provide detailed information about each pet, and track the adoption history. Users can view pets, adopt them, and view their adoption history in a beautifully designed interface with dark theme support.
 
+## Screenshots
+### Home Page
+![Home Page Screenshot](screenshots/home_page.png)
+
+### Details Page
+![Details Page Screenshot](screenshots/details_page.png)
+
+### History Page
+![History Page Screenshot](screenshots/history_page.png)
+
 ## Features
 ### 1. Home Page
 - Displays a list of pet animals available for adoption.
@@ -44,3 +54,8 @@ The Pet Adoption App is a Flutter-based mobile application designed to display a
 1. Clone the repository:
    ```bash
    git clone https://github.com/regunath-siva/pet-adoption-app.git
+
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
